@@ -39,16 +39,13 @@ export function DashboardNavbar() {
         <div className="flex items-center gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative h-10 w-10 rounded-full"
-              >
+              <button className="relative h-10 w-10 rounded-full hover:opacity-80 transition-opacity cursor-pointer">
                 <Avatar>
                   <AvatarFallback className="bg-primary text-primary-foreground">
                     {user?.name ? getInitials(user.name) : "U"}
                   </AvatarFallback>
                 </Avatar>
-              </Button>
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>

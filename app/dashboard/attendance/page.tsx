@@ -98,7 +98,7 @@ export default function AttendancePage() {
       const membersResponse = await memberService.getMembers();
       if (membersResponse.success) {
         setMembers(
-          membersResponse.data.filter((m: any) => m.status === "active")
+          membersResponse.data.filter((m: any) => m.status === "active"),
         );
       }
     } catch (error: any) {
@@ -128,7 +128,7 @@ export default function AttendancePage() {
         },
         (errorMessage) => {
           // Handle scan errors silently
-        }
+        },
       );
     } catch (error: any) {
       toast.error("Failed to start QR scanner: " + error.message);
@@ -264,7 +264,7 @@ export default function AttendancePage() {
                       </SelectContent>
                     </Select>
                   </div>
-                </DialogHeader>
+                </div>
                 <DialogFooter>
                   <Button
                     onClick={handleManualCheckIn}
@@ -314,9 +314,7 @@ export default function AttendancePage() {
           </Card>
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">
-                Checked Out
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">Checked Out</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
