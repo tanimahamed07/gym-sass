@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/auth-context";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RevenueChart } from "@/components/dashboard/revenue-chart";
@@ -13,7 +14,6 @@ import {
   DollarSign,
   AlertCircle,
   TrendingUp,
-  TrendingDown,
   Loader2,
 } from "lucide-react";
 import {
@@ -33,6 +33,7 @@ interface DashboardStats {
 }
 
 export default function DashboardPage() {
+  const { isLoading: authLoading, isAuthenticated } = useAuth();
   const [stats, setStats] = useState<DashboardStats>({
     totalMembers: 0,
     activeMembers: 0,
@@ -48,17 +49,35 @@ export default function DashboardPage() {
   const [attendanceData, setAttendanceData] = useState<
     Array<{ day: string; attendance: number }>
   >([]);
-  const [activities, setActivities] = useState<any[]>([]);
+  const [activities, setActivities] = useState<
+    Array<{
+      id: string;
+      user: string;
+      action: string;
+      time: string;
+      type: "member" | "payment";
+    }>
+  >([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Don't fetch data until auth is loaded and user is authenticated
+    if (authLoading || !isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
 
         // Fetch members
         const membersResponse = await memberService.getMembers();
-        const members = membersResponse.success ? membersResponse.data : [];
+        const members =
+          membersResponse.success && Array.isArray(membersResponse.data.data)
+            ? membersResponse.data.data
+            : [];
         const totalMembers = members.length;
         const activeMembers = members.filter(
           (m) => m.status === "active",
@@ -70,13 +89,17 @@ export default function DashboardPage() {
           startDate: today,
           endDate: today,
         });
-        const todayAttendance = attendanceResponse.success
-          ? attendanceResponse.data.length
-          : 0;
+        const todayAttendance =
+          attendanceResponse.success && Array.isArray(attendanceResponse.data)
+            ? attendanceResponse.data.length
+            : 0;
 
         // Fetch payments for monthly revenue
         const paymentsResponse = await paymentService.getPayments();
-        const payments = paymentsResponse.success ? paymentsResponse.data : [];
+        const payments =
+          paymentsResponse.success && Array.isArray(paymentsResponse.data)
+            ? paymentsResponse.data
+            : [];
 
         // Calculate current month revenue
         const currentMonth = new Date().getMonth();
@@ -154,19 +177,38 @@ export default function DashboardPage() {
         setActivities(recentActivities);
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load dashboard data",
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchDashboardData();
-  }, []);
+  }, [authLoading, isAuthenticated]);
 
   if (loading) {
     return (
       <DashboardLayout>
         <div className="flex justify-center items-center h-[calc(100vh-200px)]">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="flex flex-col justify-center items-center h-[calc(100vh-200px)] space-y-4">
+          <AlertCircle className="h-12 w-12 text-destructive" />
+          <div className="text-center">
+            <h2 className="text-xl font-semibold">Failed to Load Dashboard</h2>
+            <p className="text-muted-foreground">{error}</p>
+          </div>
         </div>
       </DashboardLayout>
     );

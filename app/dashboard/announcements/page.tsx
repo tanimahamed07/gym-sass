@@ -192,11 +192,12 @@ export default function AnnouncementsPage() {
             </p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()}>
-                <Plus className="h-4 w-4 mr-2" />
-                New Announcement
-              </Button>
+            <DialogTrigger
+              render={<Button />}
+              onClick={() => handleOpenDialog()}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              New Announcement
             </DialogTrigger>
             <DialogContent className="max-w-2xl">
               <form onSubmit={handleSubmit}>

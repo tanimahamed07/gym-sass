@@ -191,7 +191,7 @@ export default function NewMemberPage() {
                     <Select
                       value={formData.gender}
                       onValueChange={(value) =>
-                        setFormData({ ...formData, gender: value })
+                        setFormData({ ...formData, gender: value || "" })
                       }
                       disabled={loading}
                     >
@@ -252,7 +252,10 @@ export default function NewMemberPage() {
                   <Select
                     value={formData.membershipPlanId}
                     onValueChange={(value) =>
-                      setFormData({ ...formData, membershipPlanId: value })
+                      setFormData({
+                        ...formData,
+                        membershipPlanId: value || "",
+                      })
                     }
                     disabled={loading}
                   >

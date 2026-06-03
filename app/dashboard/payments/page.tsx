@@ -140,11 +140,9 @@ export default function PaymentsPage() {
           </div>
           <div className="flex gap-2">
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Record Payment
-                </Button>
+              <DialogTrigger render={<Button />}>
+                <Plus className="h-4 w-4 mr-2" />
+                Record Payment
               </DialogTrigger>
               <DialogContent>
                 <form onSubmit={handleSubmit}>
@@ -160,7 +158,7 @@ export default function PaymentsPage() {
                       <Select
                         value={formData.memberId}
                         onValueChange={(value) =>
-                          setFormData({ ...formData, memberId: value })
+                          setFormData({ ...formData, memberId: value || "" })
                         }
                       >
                         <SelectTrigger id="member">
@@ -194,7 +192,10 @@ export default function PaymentsPage() {
                       <Select
                         value={formData.paymentMethod}
                         onValueChange={(value) =>
-                          setFormData({ ...formData, paymentMethod: value })
+                          setFormData({
+                            ...formData,
+                            paymentMethod: value || "",
+                          })
                         }
                       >
                         <SelectTrigger id="method">

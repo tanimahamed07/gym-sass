@@ -26,18 +26,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Load user from localStorage on mount
   useEffect(() => {
-    const loadUser = () => {
+    const loadUser = async () => {
       try {
         const storedUser = localStorage.getItem("user");
-        const refreshToken = localStorage.getItem("refreshToken");
+        const storedAccessToken = localStorage.getItem("accessToken");
+        const storedRefreshToken = localStorage.getItem("refreshToken");
 
-        if (storedUser && refreshToken) {
+        if (storedUser && (storedAccessToken || storedRefreshToken)) {
           setUser(JSON.parse(storedUser));
-          // Optionally refresh token on mount
-          // refreshAuth();
+
+          // Restore access token to API service
+          if (storedAccessToken) {
+            setAccessToken(storedAccessToken);
+          } else if (storedRefreshToken) {
+            // If we have refresh token but no access token, try to refresh
+            try {
+              const response =
+                await authService.refreshToken(storedRefreshToken);
+              authService.saveTokensToStorage(response.data.tokens);
+              if (response.data.user) {
+                setUser(response.data.user);
+                authService.saveUserToStorage(response.data.user);
+              }
+            } catch (error) {
+              console.error("Failed to refresh token on load:", error);
+              // Clear invalid tokens
+              localStorage.removeItem("user");
+              localStorage.removeItem("refreshToken");
+              clearAccessToken();
+            }
+          }
         }
       } catch (error) {
         console.error("Error loading user:", error);
+        // Clear potentially corrupt data
+        localStorage.removeItem("user");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        clearAccessToken();
       } finally {
         setIsLoading(false);
       }

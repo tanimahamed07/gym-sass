@@ -323,8 +323,8 @@ export default function MemberProfilePage() {
               )}
 
               <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-full">Assign Plan</Button>
+                <DialogTrigger render={<Button className="w-full" />}>
+                  Assign Plan
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
@@ -336,7 +336,7 @@ export default function MemberProfilePage() {
                   <div className="space-y-4">
                     <Select
                       value={selectedPlanId}
-                      onValueChange={setSelectedPlanId}
+                      onValueChange={(value) => setSelectedPlanId(value || "")}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a plan" />
@@ -373,7 +373,7 @@ export default function MemberProfilePage() {
                   <p className="text-sm font-medium mb-2">Assign Trainer</p>
                   <Select
                     value={selectedTrainerId}
-                    onValueChange={setSelectedTrainerId}
+                    onValueChange={(value) => setSelectedTrainerId(value || "")}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a trainer" />

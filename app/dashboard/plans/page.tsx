@@ -181,11 +181,12 @@ export default function PlansPage() {
             </p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Plan
-              </Button>
+            <DialogTrigger
+              render={<Button />}
+              onClick={() => handleOpenDialog()}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Plan
             </DialogTrigger>
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <form onSubmit={handleSubmit}>

@@ -208,11 +208,9 @@ export default function AttendancePage() {
           </div>
           <div className="flex gap-2">
             <Dialog open={qrDialogOpen} onOpenChange={setQrDialogOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <QrCodeIcon className="h-4 w-4 mr-2" />
-                  Scan QR Code
-                </Button>
+              <DialogTrigger render={<Button />}>
+                <QrCodeIcon className="h-4 w-4 mr-2" />
+                Scan QR Code
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -232,11 +230,9 @@ export default function AttendancePage() {
             </Dialog>
 
             <Dialog open={manualDialogOpen} onOpenChange={setManualDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Manual Check-in
-                </Button>
+              <DialogTrigger render={<Button variant="outline" />}>
+                <UserPlus className="h-4 w-4 mr-2" />
+                Manual Check-in
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
@@ -250,7 +246,9 @@ export default function AttendancePage() {
                     <Label htmlFor="member">Select Member</Label>
                     <Select
                       value={selectedMemberId}
-                      onValueChange={setSelectedMemberId}
+                      onValueChange={(value) =>
+                        setSelectedMemberId(value || "")
+                      }
                     >
                       <SelectTrigger id="member">
                         <SelectValue placeholder="Choose a member" />

@@ -19,6 +19,18 @@ export interface Member {
   updatedAt: string;
 }
 
+export interface PaginatedMembers {
+  data: Member[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
+}
+
 export interface CreateMemberDto {
   name: string;
   email?: string;
@@ -42,8 +54,8 @@ export interface UpdateMemberDto {
 }
 
 // Member Service Functions
-export const getMembers = async (): Promise<ApiResponse<Member[]>> => {
-  return httpGet<Member[]>("/members");
+export const getMembers = async (): Promise<ApiResponse<PaginatedMembers>> => {
+  return httpGet<PaginatedMembers>("/members");
 };
 
 export const getMemberById = async (

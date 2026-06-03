@@ -36,12 +36,12 @@ export const getAttendances = async (params?: {
   memberId?: string;
 }): Promise<ApiResponse<Attendance[]>> => {
   const queryParams = new URLSearchParams();
-  if (params?.startDate) queryParams.append("startDate", params.startDate);
-  if (params?.endDate) queryParams.append("endDate", params.endDate);
-  if (params?.memberId) queryParams.append("memberId", params.memberId);
+  if (params?.startDate) queryParams.append("start_date", params.startDate);
+  if (params?.endDate) queryParams.append("end_date", params.endDate);
+  if (params?.memberId) queryParams.append("member_id", params.memberId);
 
   const query = queryParams.toString();
-  return httpGet<Attendance[]>(`/attendance${query ? `?${query}` : ""}`);
+  return httpGet<Attendance[]>(`/attendance/report${query ? `?${query}` : ""}`);
 };
 
 export const getAttendanceById = async (

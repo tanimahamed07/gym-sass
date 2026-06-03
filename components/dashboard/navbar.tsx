@@ -38,14 +38,12 @@ export function DashboardNavbar() {
 
         <div className="flex items-center gap-4">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="relative h-10 w-10 rounded-full hover:opacity-80 transition-opacity cursor-pointer">
-                <Avatar>
-                  <AvatarFallback className="bg-primary text-primary-foreground">
-                    {user?.name ? getInitials(user.name) : "U"}
-                  </AvatarFallback>
-                </Avatar>
-              </button>
+            <DropdownMenuTrigger className="relative h-10 w-10 rounded-full hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-0 p-0">
+              <Avatar>
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {user?.name ? getInitials(user.name) : "U"}
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
@@ -62,18 +60,24 @@ export function DashboardNavbar() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings" className="cursor-pointer">
+              <Link
+                href="/dashboard/settings"
+                className="cursor-pointer no-underline"
+              >
+                <DropdownMenuItem>
                   <User className="mr-2 h-4 w-4" />
                   Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings" className="cursor-pointer">
+                </DropdownMenuItem>
+              </Link>
+              <Link
+                href="/dashboard/settings"
+                className="cursor-pointer no-underline"
+              >
+                <DropdownMenuItem>
                   <Settings className="mr-2 h-4 w-4" />
                   Settings
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={logout}

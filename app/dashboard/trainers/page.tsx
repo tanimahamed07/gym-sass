@@ -166,11 +166,12 @@ export default function TrainersPage() {
             </p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Trainer
-              </Button>
+            <DialogTrigger
+              render={<Button />}
+              onClick={() => handleOpenDialog()}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Trainer
             </DialogTrigger>
             <DialogContent>
               <form onSubmit={handleSubmit}>

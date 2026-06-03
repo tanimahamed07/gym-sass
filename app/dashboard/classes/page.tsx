@@ -149,11 +149,12 @@ export default function ClassesPage() {
             <p className="text-muted-foreground">Manage gym classes</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Class
-              </Button>
+            <DialogTrigger
+              render={<Button />}
+              onClick={() => handleOpenDialog()}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Class
             </DialogTrigger>
             <DialogContent>
               <form onSubmit={handleSubmit}>
@@ -190,7 +191,7 @@ export default function ClassesPage() {
                     <Select
                       value={formData.trainerId}
                       onValueChange={(value) =>
-                        setFormData({ ...formData, trainerId: value })
+                        setFormData({ ...formData, trainerId: value || "" })
                       }
                     >
                       <SelectTrigger>

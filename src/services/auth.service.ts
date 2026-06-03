@@ -77,6 +77,7 @@ export const logout = async (): Promise<void> => {
   // Clear tokens and user data
   clearAccessToken();
   if (typeof window !== "undefined") {
+    localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
   }
@@ -89,9 +90,12 @@ export const refreshToken = async (
     refreshToken: refreshTokenValue,
   });
 
-  // Update access token
+  // Update access token in memory and localStorage
   if (response.data?.tokens?.accessToken) {
     setAccessToken(response.data.tokens.accessToken);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("accessToken", response.data.tokens.accessToken);
+    }
   }
 
   return response;
@@ -119,6 +123,7 @@ export const saveUserToStorage = (user: User): void => {
 export const saveTokensToStorage = (tokens: AuthTokens): void => {
   if (typeof window !== "undefined") {
     setAccessToken(tokens.accessToken);
+    localStorage.setItem("accessToken", tokens.accessToken);
     localStorage.setItem("refreshToken", tokens.refreshToken);
   }
 };
